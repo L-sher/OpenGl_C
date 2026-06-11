@@ -1,30 +1,24 @@
-#include<iostream>
-#include<glad/glad.h>
-#include<GLFW/glfw3.h>
-#include "Shaders.h"
-#include<Soil/SOIL.h>
-#include "assimp/stb_image.h"
+#include "pch.h"
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
+#include "Shaders.h"
 
 #include "GoodMesh.h"
+#include "ViewGrid.h"
 
+using glm::vec3;
 
-glm::vec3 cameraPos = glm::vec3(15.0f, 4.0f, 15.0f);
-glm::vec3 cameraFront = glm::vec3(20.0f, -10.0f, -1.0f);
+vec3 cameraPos = vec3(15.0f, 4.0f, 15.0f);
+vec3 cameraFront = vec3(20.0f, -10.0f, -1.0f);
 
-glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
-glm::vec3 cameraDown = glm::vec3(0.0f, -1.0f, 0.0f);
-
-
+vec3 cameraUp = vec3(0.0f, 1.0f, 0.0f);
+vec3 cameraDown = vec3(0.0f, -1.0f, 0.0f);
 
 void key_callback(GLFWwindow*, int, int, int, int);
 bool keys[1024];
 void do_movement();
 void mouse_callback(GLFWwindow*, double, double);
 void scroll_callback(GLFWwindow*, double, double);
+
 GLfloat lastX = 550, lastY = 450;
 
 GLfloat deltaTime = 0.0f;
@@ -33,6 +27,7 @@ GLfloat lastFrame = 0.0f;
 GLfloat yaw = -135.0f;
 GLfloat pitch = -15.0f;
 GLfloat fov = 45.0f;
+
 int CellCount = 0;
 bool show_demo_window = true;
 bool show_another_window = false;
@@ -96,12 +91,12 @@ int main()
 	glfwSetScrollCallback(window, scroll_callback);
 	/*glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
 	glm::mat4 trans;
-	trans = glm::translate(trans, glm::vec3(0.0f, 0.6f, 0.0f));
+	trans = glm::translate(trans, vec3(0.0f, 0.6f, 0.0f));
 	vec = trans * vec;
 	std::cout << vec.x << vec.y << vec.z << std::endl;
 
-	trans = glm::rotate(trans, 0.0f, glm::vec3(0.0, 0.0, 1.0));
-	trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));*/
+	trans = glm::rotate(trans, 0.0f, vec3(0.0, 0.0, 1.0));
+	trans = glm::scale(trans, vec3(0.5, 0.5, 0.5));*/
 	
 
 	Shader ShaderProgram("ShVert.vert", "ShFrag3.frag");
@@ -222,51 +217,9 @@ int main()
 	int currentIndicesPos = 0;
 	bool endoflinemarker = false;
 	bool newLine = true;
-	for (float i = 0.0f; i <= 10; i=i+1)
-	{
-		for (float j = 0.0f; j <= 10; j=j+1)
-		{
 
-			VerticesForLines[VerticesCount] = j / 10.0f;//x
-			VerticesCount++;
-			VerticesForLines[VerticesCount] = 0.0f;		//y;
-			VerticesCount++;
-			VerticesForLines[VerticesCount] = i / 10.0f;	//z
-			VerticesCount++;
-
-			if (currentIndicesPos!=0 && fmod(currentIndicesPos - i, 10) == 0)
-			{
-				if (endoflinemarker) {
-					endoflinemarker = false;
-					newLine = true;
-				}
-				else {
-					endoflinemarker = true;
-				}
-			}
-			else {
-				endoflinemarker = false;
-			}
-
-			if (currentIndicesPos + 11 <= 120) {
-				IndicesForLines[indicesCount] = currentIndicesPos;
-				indicesCount++;
-				IndicesForLines[indicesCount] = currentIndicesPos + 11;
-				indicesCount++;
-			}
-			
-			if (currentIndicesPos + 1 <= 120 && !endoflinemarker)
-			{
-				IndicesForLines[indicesCount] = currentIndicesPos;
-				indicesCount++;
-				IndicesForLines[indicesCount] = currentIndicesPos + 1;
-				indicesCount++;
-			}
-			
-			currentIndicesPos++;
-
-		}
-	}
+	ViewGrid grid;
+	grid.DrawGrid(VerticesForLines, newLine, VerticesCount, currentIndicesPos, endoflinemarker, IndicesForLines, indicesCount);
 
 	GLfloat VerticesForCoordinates[12]{
 		0,4,0,
@@ -330,8 +283,8 @@ int main()
 	glBindVertexArray(0);
 
 	//Координаты мирового пространства
-	glm::vec3 cubePositions[] = {
-			glm::vec3(5.0f,  0.2f,   7.0f)
+	vec3 cubePositions[] = {
+			vec3(5.0f,  0.2f,   7.0f)
 	};
 
 	
@@ -345,7 +298,7 @@ int main()
 	glEnable(GL_DEPTH_TEST);
 
 	//Угол камеры
-	glm::vec3 front;
+	vec3 front;
 	front.x = cos(glm::radians(pitch)) * cos(glm::radians(yaw));
 	front.y = sin(glm::radians(pitch));
 	front.z = cos(glm::radians(pitch)) * sin(glm::radians(yaw));
@@ -384,7 +337,7 @@ int main()
 		float x = 0.0f;
 		float y = 0.0f;
 		float z = 0.0f;
-		glm::vec3 PositionInWorld= glm::vec3(x, y, z);
+		vec3 PositionInWorld= vec3(x, y, z);
 		glm::vec4 color = glm::vec4(0.7f, 0.9f, 0.8f, 1.0f);
 		ShaderProgram.setVec4("vertexColor", color);
 		glBindVertexArray(VAOsLines);
@@ -396,7 +349,7 @@ int main()
 			while (i <= 10)
 			{
 				glm::mat4 model;
-				PositionInWorld = glm::vec3(x, y, z);
+				PositionInWorld = vec3(x, y, z);
 				model = glm::translate(model, PositionInWorld);
 				modelLoc = glGetUniformLocation(ShaderProgram.ID, "model");
 				glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
@@ -421,7 +374,7 @@ int main()
 			glm::mat4 model;
 			model = glm::translate(model, cubePositions[i]);
 		
-			//model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+			//model = glm::rotate(model, glm::radians(angle), vec3(1.0f, 0.3f, 0.5f));
 			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 			glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_INT, 0);
 
@@ -433,7 +386,7 @@ int main()
 		ShaderProgram.setVec4("vertexColor", color);
 		glBindVertexArray(VAOsCoordinates);
 		
-		PositionInWorld = glm::vec3(0, 0, 0);
+		PositionInWorld = vec3(0, 0, 0);
 		glm::mat4 model1;
 		model1 = glm::translate(model1, PositionInWorld);
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model1));
@@ -443,8 +396,8 @@ int main()
 		glUseProgram(ShaderProgram2.ID);
 
 		glm::mat4 trans;
-		model = glm::rotate(model, 270.0f, glm::vec3(1, 0, 0));
-		//trans = glm::rotate(trans, glm::radians(45.0f), glm::vec3(0, 0, 1));
+		model = glm::rotate(model, 270.0f, vec3(1, 0, 0));
+		//trans = glm::rotate(trans, glm::radians(45.0f), vec3(0, 0, 1));
 		projection = projection * trans;
 		modelLoc = glGetUniformLocation(ShaderProgram2.ID, "model");
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
@@ -552,7 +505,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 	if (pitch < -89.0f)
 		pitch = -89.0f;
 
-	glm::vec3 front;
+	vec3 front;
 	front.x = cos(glm::radians(pitch)) * cos(glm::radians(yaw));
 	front.y = sin(glm::radians(pitch));
 	front.z = cos(glm::radians(pitch)) * sin(glm::radians(yaw));

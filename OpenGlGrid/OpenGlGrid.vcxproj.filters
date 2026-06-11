@@ -16,6 +16,15 @@
     <Filter Include="Файлы ресурсов\Shaders">
       <UniqueIdentifier>{6fa82019-d644-4391-b3f9-20c30ea9bf65}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Render">
+      <UniqueIdentifier>{4924c95e-96e8-40f9-93dc-d56c7ab1a832}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render\Headers">
+      <UniqueIdentifier>{ffe87f2d-72bb-4e90-af30-d456d0404cae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render\ViewObjects">
+      <UniqueIdentifier>{8d08bf6c-5caf-4757-91a0-e6b489cf1dac}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -36,16 +45,22 @@
     <ClInclude Include="GoodMesh.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Render\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewGrid.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="Shaders.cpp">
-      <Filter>Исходные файлы</Filter>
+      <Filter>Render</Filter>
     </ClCompile>
     <ClCompile Include="glad.c">
-      <Filter>Исходные файлы</Filter>
+      <Filter>Файлы ресурсов</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewGrid.cpp">
+      <Filter>Render\ViewObjects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -62,10 +77,10 @@
       <Filter>Файлы ресурсов\Shaders</Filter>
     </None>
     <None Include="assimp-vc143-mtd.dll" />
-    <None Include="Fragments.frag">
+    <None Include="vertices.vert">
       <Filter>Файлы ресурсов\Shaders</Filter>
     </None>
-    <None Include="vertices.vert">
+    <None Include="Fragments.frag">
       <Filter>Файлы ресурсов\Shaders</Filter>
     </None>
   </ItemGroup>

@@ -139,12 +139,14 @@
     <ClInclude Include="Main.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Model.h" />
+    <ClInclude Include="pch.h" />
     <ClInclude Include="Shaders.h" />
+    <ClInclude Include="ViewGrid.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c" />
+    <ClCompile Include="ViewGrid.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Shaders.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Fragments.frag" />
